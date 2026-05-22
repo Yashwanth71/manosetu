@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0C1120; padding: 20px; font-family: 'DM Sans', sans-serif; }
+  .label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #4B5A72; margin-bottom: 12px; }
+  .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 14px 0; }
+  .row { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
+
+  /* Hero mark */
+  .hero-wrap {
+    display: flex; justify-content: center; align-items: center;
+    background: radial-gradient(ellipse at 50% 40%, rgba(124,58,237,0.18) 0%, transparent 70%), #0C1120;
+    border-radius: 16px; border: 1px solid rgba(255,255,255,0.06);
+    padding: 24px; margin-bottom: 14px;
+  }
+
+  /* Lockup panels */
+  .panel {
+    flex: 1; min-width: 160px; border-radius: 14px; padding: 16px 18px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .panel-dark   { background: #0C1120; border: 1px solid rgba(255,255,255,0.08); }
+  .panel-navy   { background: #111827; border: 1px solid rgba(255,255,255,0.06); }
+  .panel-light  { background: #FAFAF8; border: 1px solid rgba(0,0,0,0.06); }
+  .panel-violet { background: #7C3AED; border: 1px solid rgba(255,255,255,0.12); }
+  .panel-grad   { background: linear-gradient(135deg, #3B82F6, #7C3AED); border: none; }
+
+  .wordmark      { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.01em; background: linear-gradient(135deg,#3B82F6,#7C3AED); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .wordmark-wht  { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: white; }
+  .wordmark-dark { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: #0D1117; }
+  .sub { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; }
+  .panel-label { font-family: 'DM Mono', monospace; font-size: 8px; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+  .panel-label-dark { color: rgba(0,0,0,0.3); }
+
+  /* Scale row */
+  .scale-row { display: flex; gap: 14px; align-items: flex-end; justify-content: center; flex-wrap: wrap; }
+  .scale-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .scale-px { font-family: 'DM Mono', monospace; font-size: 8px; color: #4B5A72; }
+
+  /* Clearspace demo */
+  .clearspace-wrap {
+    background: #111827; border-radius: 14px; border: 1px solid rgba(255,255,255,0.06);
+    padding: 16px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .cs-inner {
+    position: relative; display: inline-flex; align-self: center;
+    border: 1px dashed rgba(124,58,237,0.35); padding: 16px;
+  }
+  .cs-label { font-size: 9px; color: rgba(124,58,237,0.5); position: absolute; }
+  .cs-top    { top: 2px;  left: 50%; transform: translateX(-50%); }
+  .cs-bottom { bottom: 2px; left: 50%; transform: translateX(-50%); }
+  .cs-left   { left: 2px; top: 50%; transform: translateY(-50%) rotate(-90deg); }
+  .cs-right  { right: 2px; top: 50%; transform: translateY(-50%) rotate(90deg); }
+</style>
+</head>
+<body>
+
+<!-- Hero mark -->
+<div class="label">ManoSetu · Padma Mark</div>
+<div class="hero-wrap">
+  <img src="../assets/logo-on-dark.png" width="120" height="120" alt="ManoSetu lotus logo" style="border-radius:16px">
+</div>
+
+<!-- Lockups -->
+<div class="label">Wordmark Lockups — Background Variants</div>
+<div class="row">
+
+  <!-- Dark -->
+  <div class="panel panel-dark">
+    <img src="../assets/logo-actual.png" width="40" height="40" alt="mark">
+    <div style="text-align:center">
+      <div class="wordmark">ManoSetu</div>
+      <div class="sub" style="color:#8B9CB8;margin-top:2px">Mental Wellness</div>
+    </div>
+    <div class="panel-label">Dark · Primary</div>
+  </div>
+
+  <!-- Navy card -->
+  <div class="panel panel-navy">
+    <img src="../assets/logo-actual.png" width="36" height="36" alt="mark">
+    <div style="text-align:center">
+      <div class="wordmark">ManoSetu</div>
+      <div class="sub" style="color:#4B5A72;margin-top:2px">Mental Wellness</div>
+    </div>
+    <div class="panel-label">Card Surface</div>
+  </div>
+
+  <!-- Light -->
+  <div class="panel panel-light">
+    <img src="../assets/logo-on-light.png" width="40" height="40" alt="mark" style="border-radius:8px">
+    <div style="text-align:center">
+      <div class="wordmark-dark">ManoSetu</div>
+      <div class="sub" style="color:#7A8494;margin-top:2px">Mental Wellness</div>
+    </div>
+    <div class="panel-label panel-label-dark">Light Mode</div>
+  </div>
+
+  <!-- Violet -->
+  <div class="panel panel-violet">
+    <img src="../assets/logo-actual.png" width="36" height="36" alt="mark" style="filter:drop-shadow(0 1px 8px rgba(255,255,255,0.25))">
+    <div style="text-align:center">
+      <div class="wordmark-wht">ManoSetu</div>
+      <div class="sub" style="color:rgba(255,255,255,0.55);margin-top:2px">Mental Wellness</div>
+    </div>
+    <div class="panel-label">Brand Violet</div>
+  </div>
+
+  <!-- Gradient -->
+  <div class="panel panel-grad">
+    <img src="../assets/logo-actual.png" width="36" height="36" alt="mark" style="filter:drop-shadow(0 2px 10px rgba(0,0,0,0.35))">
+    <div style="text-align:center">
+      <div class="wordmark-wht">ManoSetu</div>
+      <div class="sub" style="color:rgba(255,255,255,0.65);margin-top:2px">Mental Wellness</div>
+    </div>
+    <div class="panel-label">Brand Gradient</div>
+  </div>
+
+</div>
+
+<div class="divider"></div>
+
+<!-- Scale -->
+<div class="label">Icon Mark — Size Scale</div>
+<div class="scale-row">
+  <div class="scale-item"><img src="../assets/logo-actual.png" width="16" height="16" alt=""><div class="scale-px">16px</div></div>
+  <div class="scale-item"><img src="../assets/logo-actual.png" width="24" height="24" alt=""><div class="scale-px">24px</div></div>
+  <div class="scale-item"><img src="../assets/logo-actual.png" width="32" height="32" alt=""><div class="scale-px">32px</div></div>
+  <div class="scale-item"><img src="../assets/logo-actual.png" width="48" height="48" alt=""><div class="scale-px">48px</div></div>
+  <div class="scale-item"><img src="../assets/logo-actual.png" width="64" height="64" alt=""><div class="scale-px">64px</div></div>
+  <div class="scale-item"><img src="../assets/logo-actual.png" width="80" height="80" alt=""><div class="scale-px">80px</div></div>
+  <div class="scale-item"><img src="../assets/logo-actual.png" width="96" height="96" alt=""><div class="scale-px">96px</div></div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Clearspace -->
+<div class="label">Clearspace Rule — Minimum Padding = 0.5× logo height</div>
+<div class="clearspace-wrap">
+  <div class="cs-inner">
+    <span class="cs-label cs-top">0.5×</span>
+    <span class="cs-label cs-bottom">0.5×</span>
+    <span class="cs-label cs-left">0.5×</span>
+    <span class="cs-label cs-right">0.5×</span>
+    <img src="../assets/logo-actual.png" width="48" height="48" alt="">
+  </div>
+  <div style="font-size:10px;color:#4B5A72;text-align:center;line-height:1.5">
+    Always maintain 0.5× the mark height as clear space on all sides.<br>
+    Never place the mark closer to an edge or competing element.
+  </div>
+</div>
+
+</body>
+</html>

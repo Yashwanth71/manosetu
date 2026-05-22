@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@400&family=Syne:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0C1120; padding: 20px; font-family: 'DM Sans', sans-serif; }
+  .label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5A72; margin-bottom: 12px; }
+  .motion-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .motion-row { background: #111827; border-radius: 10px; padding: 10px 12px; border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .motion-dot { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(135deg,#3B82F6,#7C3AED); flex-shrink: 0; }
+  .motion-name { font-family: 'DM Mono', monospace; font-size: 10px; color: #C4B5FD; min-width: 100px; }
+  .motion-desc { font-size: 11px; color: #8B9CB8; }
+  .motion-dur { font-family: 'DM Mono', monospace; font-size: 10px; color: #4B5A72; margin-left: auto; white-space: nowrap; }
+  .reduced-banner { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.25); border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; }
+  .reduced-dot { width: 8px; height: 8px; border-radius: 50%; background: #F87171; flex-shrink: 0; }
+  .reduced-text { font-size: 11px; color: #F87171; }
+  .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 10px 0 14px; }
+
+  /* Live demo animations */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes float  { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+  @keyframes bindPulse { 0% { transform:scale(1); opacity:.7; } 50% { transform:scale(1.2); opacity:1; } 100% { transform:scale(1); opacity:.7; } }
+  .demo-fadeup  { animation: fadeUp 0.7s ease-out both; }
+  .demo-float   { animation: float 4s ease-in-out infinite; }
+  .demo-pulse   { animation: bindPulse 1.5s ease-in-out infinite; }
+</style>
+</head>
+<body>
+<div class="label">Motion System</div>
+<div class="motion-rows">
+  <div class="motion-row">
+    <div class="motion-dot demo-fadeup"></div>
+    <div class="motion-name">fadeUp</div>
+    <div class="motion-desc">Entrance · 24px Y translate · opacity 0→1</div>
+    <div class="motion-dur">0.7s ease-out</div>
+  </div>
+  <div class="motion-row">
+    <div class="motion-dot demo-float"></div>
+    <div class="motion-name">float</div>
+    <div class="motion-desc">Highlight cards · Y 0→-8px · infinite</div>
+    <div class="motion-dur">4s ease-in-out ∞</div>
+  </div>
+  <div class="motion-row">
+    <div class="motion-dot demo-pulse"></div>
+    <div class="motion-name">bindPulse</div>
+    <div class="motion-desc">Streak milestone · scale 1→1.2 · opacity 0.7→1</div>
+    <div class="motion-dur">1.5s ease-in-out ∞</div>
+  </div>
+  <div class="motion-row">
+    <div class="motion-dot" style="background:#3B82F6"></div>
+    <div class="motion-name">slideIn</div>
+    <div class="motion-desc">Navigation panels · 16px X translate</div>
+    <div class="motion-dur">0.3s ease</div>
+  </div>
+  <div class="motion-row">
+    <div class="motion-dot" style="background:#34D399"></div>
+    <div class="motion-name">breatheRing</div>
+    <div class="motion-desc">Pranayama ring · scale 0.88→1.16 · rAF-driven JS only</div>
+    <div class="motion-dur">phase-synced</div>
+  </div>
+</div>
+<div class="divider"></div>
+<div class="reduced-banner">
+  <div class="reduced-dot"></div>
+  <div class="reduced-text"><strong>@media prefers-reduced-motion</strong> — animation-duration: 0ms. ZERO duration, not slowed. Non-negotiable WCAG.</div>
+</div>
+</body>
+</html>

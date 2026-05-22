@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <linearGradient id="brand-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3B82F6"></stop>
+      <stop offset="100%" stop-color="#7C3AED"></stop>
+    </linearGradient>
+    <linearGradient id="brand-grad-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3B82F6"></stop>
+      <stop offset="100%" stop-color="#7C3AED"></stop>
+    </linearGradient>
+  </defs>
+  
+  <circle cx="100" cy="100" r="90" stroke="url(#brand-grad)" stroke-width="2.5" opacity="0.35"></circle>
+  
+  <path d="M100 100 C75 75, 40 80, 45 100 C40 120, 75 125, 100 100Z" fill="url(#brand-grad)" opacity="0.85"></path>
+  
+  <path d="M100 100 C125 75, 160 80, 155 100 C160 120, 125 125, 100 100Z" fill="url(#brand-grad)" opacity="0.85"></path>
+  
+  <path d="M100 100 C75 75, 80 40, 100 45 C120 40, 125 75, 100 100Z" fill="url(#brand-grad)"></path>
+  
+  <path d="M100 100 C75 125, 80 160, 100 155 C120 160, 125 125, 100 100Z" fill="url(#brand-grad)" opacity="0.7"></path>
+  
+  <path d="M100 100 C80 75, 58 58, 65 75 C58 92, 80 105, 100 100Z" fill="url(#brand-grad)" opacity="0.6"></path>
+  
+  <path d="M100 100 C120 75, 142 58, 135 75 C142 92, 120 105, 100 100Z" fill="url(#brand-grad)" opacity="0.6"></path>
+  
+  <circle cx="100" cy="100" r="8" fill="url(#brand-grad)"></circle>
+  <circle cx="100" cy="100" r="4" fill="white" opacity="0.9"></circle>
+</svg>

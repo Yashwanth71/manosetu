@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" fill="none">
+  <defs>
+    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3B82F6"></stop>
+      <stop offset="100%" stop-color="#7C3AED"></stop>
+    </linearGradient>
+  </defs>
+  
+  <g transform="translate(0,0) scale(0.4)">
+    <circle cx="100" cy="100" r="90" stroke="url(#lg)" stroke-width="3" opacity="0.3"></circle>
+    <path d="M100 100 C75 75, 40 80, 45 100 C40 120, 75 125, 100 100Z" fill="url(#lg)" opacity="0.85"></path>
+    <path d="M100 100 C125 75, 160 80, 155 100 C160 120, 125 125, 100 100Z" fill="url(#lg)" opacity="0.85"></path>
+    <path d="M100 100 C75 75, 80 40, 100 45 C120 40, 125 75, 100 100Z" fill="url(#lg)"></path>
+    <path d="M100 100 C75 125, 80 160, 100 155 C120 160, 125 125, 100 100Z" fill="url(#lg)" opacity="0.7"></path>
+    <path d="M100 100 C80 75, 58 58, 65 75 C58 92, 80 105, 100 100Z" fill="url(#lg)" opacity="0.6"></path>
+    <path d="M100 100 C120 75, 142 58, 135 75 C142 92, 120 105, 100 100Z" fill="url(#lg)" opacity="0.6"></path>
+    <circle cx="100" cy="100" r="8" fill="url(#lg)"></circle>
+    <circle cx="100" cy="100" r="4" fill="white" opacity="0.9"></circle>
+  </g>
+  
+  <text x="50" y="30" font-family="&#39;Syne&#39;, system-ui, sans-serif" font-weight="800" font-size="28" letter-spacing="-0.5" fill="url(#lg)">ManoSetu</text>
+  <text x="50" y="52" font-family="&#39;DM Sans&#39;, system-ui, sans-serif" font-weight="300" font-size="12" letter-spacing="3" fill="#8B9CB8">MENTAL WELLNESS</text>
+  
+  <text x="50" y="70" font-family="&#39;Noto Sans Devanagari&#39;, sans-serif" font-weight="400" font-size="13" fill="#C4B5FD" opacity="0.7">मनोसेतु</text>
+</svg>

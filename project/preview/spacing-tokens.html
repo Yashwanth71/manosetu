@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0C1120; padding: 20px; font-family: 'DM Sans', sans-serif; }
+  .label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5A72; margin-bottom: 12px; }
+  .label + .label { margin-top: 16px; }
+  .rows { display: flex; flex-direction: column; gap: 6px; }
+  .token-row { display: flex; align-items: center; gap: 10px; }
+  .bar-wrap { flex: 1; height: 20px; display: flex; align-items: center; }
+  .bar { height: 8px; border-radius: 4px; background: linear-gradient(90deg,#3B82F6,#7C3AED); }
+  .token-name { font-family: 'DM Mono', monospace; font-size: 10px; color: #C4B5FD; min-width: 140px; }
+  .token-val  { font-family: 'DM Mono', monospace; font-size: 10px; color: #4B5A72; min-width: 36px; text-align: right; }
+  .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 14px 0; }
+</style>
+</head>
+<body>
+<div class="label">Spacing Tokens</div>
+<div class="rows">
+  <div class="token-row"><div class="token-name">--space-inline</div><div class="bar-wrap"><div class="bar" style="width:8px"></div></div><div class="token-val">8px</div></div>
+  <div class="token-row"><div class="token-name">--space-section</div><div class="bar-wrap"><div class="bar" style="width:12px"></div></div><div class="token-val">12px</div></div>
+  <div class="token-row"><div class="token-name">--space-card-pad</div><div class="bar-wrap"><div class="bar" style="width:16px"></div></div><div class="token-val">16px</div></div>
+  <div class="token-row"><div class="token-name">--space-screen-h</div><div class="bar-wrap"><div class="bar" style="width:20px"></div></div><div class="token-val">20px</div></div>
+  <div class="token-row"><div class="token-name">--space-screen-v</div><div class="bar-wrap"><div class="bar" style="width:24px"></div></div><div class="token-val">24px</div></div>
+  <div class="token-row"><div class="token-name">--space-8</div><div class="bar-wrap"><div class="bar" style="width:32px"></div></div><div class="token-val">32px</div></div>
+  <div class="token-row"><div class="token-name">--space-10</div><div class="bar-wrap"><div class="bar" style="width:40px"></div></div><div class="token-val">40px</div></div>
+  <div class="token-row"><div class="token-name">--space-12</div><div class="bar-wrap"><div class="bar" style="width:48px"></div></div><div class="token-val">48px</div></div>
+</div>
+<div class="divider"></div>
+<div class="label">Touch Targets</div>
+<div class="rows">
+  <div class="token-row"><div class="token-name">--touch-min</div><div class="bar-wrap"><div class="bar" style="width:44px;background:#F87171;opacity:0.7"></div></div><div class="token-val">44px</div></div>
+  <div class="token-row"><div class="token-name">--touch-comfortable</div><div class="bar-wrap"><div class="bar" style="width:52px;background:#FBBF24;opacity:0.7"></div></div><div class="token-val">52px</div></div>
+  <div class="token-row"><div class="token-name">--touch-large</div><div class="bar-wrap"><div class="bar" style="width:60px;background:#34D399;opacity:0.7"></div></div><div class="token-val">60px</div></div>
+</div>
+</body>
+</html>

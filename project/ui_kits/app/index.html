@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ManoSetu — App UI Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&family=DM+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #060A13; font-family: 'DM Sans', sans-serif; overflow: hidden; }
+
+  .stage {
+    width: 100vw; height: 100vh; display: flex; align-items: center;
+    justify-content: center; gap: 40px;
+    background: radial-gradient(ellipse at 28% 38%, rgba(124,58,237,0.07) 0%, transparent 55%),
+                radial-gradient(ellipse at 72% 62%, rgba(59,130,246,0.05) 0%, transparent 55%), #060A13;
+  }
+
+  /* Phone shell */
+  .phone {
+    width: 390px; height: 800px; background: #0C1120;
+    border-radius: 50px; border: 1.5px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 0 8px #161626, 0 0 0 10px rgba(255,255,255,0.035),
+                0 48px 100px rgba(0,0,0,0.85), 0 0 80px rgba(124,58,237,0.07);
+    position: relative; overflow: hidden; display: flex; flex-direction: column;
+  }
+  .dynamic-island {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: 118px; height: 34px; background: #000; border-radius: 20px; z-index: 100;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .di-cam { width: 10px; height: 10px; border-radius: 50%; background: #111; border: 1.5px solid #1e1e1e; }
+  .di-sensor { width: 6px; height: 6px; border-radius: 50%; background: #1e1e1e; }
+
+  .status-bar {
+    height: 52px; display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 0 26px 8px; flex-shrink: 0; z-index: 10;
+  }
+  .status-time { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #F0F4FF; }
+  .status-icons { display: flex; gap: 5px; align-items: center; }
+
+  .screen-wrap { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+
+  /* Bottom nav — 5 items */
+  .bottom-nav {
+    background: rgba(17,24,39,0.96); border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; padding: 6px 0 2px; flex-shrink: 0; backdrop-filter: blur(20px);
+  }
+  .nav-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 3px; padding: 4px 0; cursor: pointer; min-height: 48px;
+    justify-content: center; border: none; background: none;
+  }
+  .nav-icon { position: relative; display: flex; align-items: center; justify-content: center; }
+  .nav-dot {
+    position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%);
+    width: 4px; height: 4px; border-radius: 2px; background: #7C3AED; display: none;
+  }
+  .nav-label { font-size: 9px; font-weight: 500; }
+
+  .home-indicator { height: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .home-bar { width: 110px; height: 4px; background: rgba(255,255,255,0.22); border-radius: 2px; }
+
+  /* Side panel */
+  .side-panel { width: 240px; display: flex; flex-direction: column; gap: 10px; }
+  .side-brand { margin-bottom: 4px; }
+  .side-brand-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; background: linear-gradient(135deg,#3B82F6,#7C3AED); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .side-brand-sub  { font-size: 10px; color: #4B5A72; margin-top: 2px; font-family: 'DM Mono', monospace; letter-spacing: 0.05em; }
+  .side-card {
+    background: rgba(17,24,39,0.6); border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 11px; padding: 10px 12px; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .side-card:hover  { background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.25); }
+  .side-card.active { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.35); }
+  .side-card-row    { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+  .side-card-dot    { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .side-card-title  { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: #F0F4FF; }
+  .side-card-sub    { font-size: 10px; color: #4B5A72; }
+  .side-hint { font-size: 10px; color: #4B5A72; text-align: center; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- Side nav -->
+  <div class="side-panel" id="sidePanel">
+    <div class="side-brand">
+      <div class="side-brand-name">ManoSetu</div>
+      <div class="side-brand-sub">APP UI KIT · v2</div>
+    </div>
+
+    <div class="side-card active" onclick="switchScreen('home')"    id="nav-home">
+      <div class="side-card-row"><div class="side-card-dot" style="background:#34D399"></div><div class="side-card-title">Home</div></div>
+      <div class="side-card-sub">Dashboard · Breathe · Journey · Mood</div>
+    </div>
+    <div class="side-card" onclick="switchScreen('manas')"   id="nav-manas">
+      <div class="side-card-row"><div class="side-card-dot" style="background:#7C3AED"></div><div class="side-card-title">Manas AI</div></div>
+      <div class="side-card-sub">Emotion-triggered breathing tools</div>
+    </div>
+    <div class="side-card" onclick="switchScreen('therapy')" id="nav-therapy">
+      <div class="side-card-row"><div class="side-card-dot" style="background:#3B82F6"></div><div class="side-card-title">Therapy</div></div>
+      <div class="side-card-sub">Therapist matching</div>
+    </div>
+    <div class="side-card" onclick="switchScreen('community')" id="nav-community">
+      <div class="side-card-row"><div class="side-card-dot" style="background:#06B6D4"></div><div class="side-card-title">Community</div></div>
+      <div class="side-card-sub">Anonymous peer support</div>
+    </div>
+    <div class="side-card" onclick="switchScreen('profile')"  id="nav-profile">
+      <div class="side-card-row"><div class="side-card-dot" style="background:#F59E0B"></div><div class="side-card-title">Profile</div></div>
+      <div class="side-card-sub">Stats · Journey · Settings</div>
+    </div>
+    <div class="side-card" onclick="switchScreen('breathe')"  id="nav-breathe" style="border-style:dashed">
+      <div class="side-card-row"><div class="side-card-dot" style="background:#0891B2"></div><div class="side-card-title">Breathing Session</div></div>
+      <div class="side-card-sub">12 techniques · rAF ring animation</div>
+    </div>
+    <div class="side-hint">Click a screen or tap the phone nav bar</div>
+  </div>
+
+  <!-- Phone -->
+  <div class="phone">
+    <div class="dynamic-island"><div class="di-cam"></div><div class="di-sensor"></div></div>
+
+    <div class="status-bar">
+      <div class="status-time">9:41</div>
+      <div class="status-icons">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="none"><rect x="0" y="5" width="3" height="6" rx="1" fill="white" opacity=".45"/><rect x="4.5" y="3" width="3" height="8" rx="1" fill="white" opacity=".65"/><rect x="9" y="1" width="3" height="10" rx="1" fill="white"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="white"/></svg>
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><path d="M7.5 8.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" fill="white"/><path d="M3 5.5C4.5 4 5.9 3.2 7.5 3.2s3 .8 4.5 2.3" stroke="white" strokeWidth="1.4" strokeLinecap="round" fill="none"/><path d="M.5 3C2.8.7 5 -.5 7.5 -.5s4.7 1.2 7 3.5" stroke="white" strokeWidth="1.4" strokeLinecap="round" fill="none" opacity=".55"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="white" strokeOpacity=".3"/><rect x="2" y="2" width="16" height="8" rx="2" fill="white"/><path d="M23 4v4" stroke="white" strokeOpacity=".35" strokeWidth="2" strokeLinecap="round"/></svg>
+      </div>
+    </div>
+
+    <div class="screen-wrap" id="reactRoot"></div>
+
+    <!-- Bottom nav — 5 tabs -->
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="switchScreen('home')"      id="bnav-home">
+        <div class="nav-icon">
+          <svg id="icon-home" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div class="nav-dot" id="dot-home" style="display:block"></div>
+        </div>
+        <span class="nav-label" id="lbl-home" style="color:#C4B5FD">Home</span>
+      </button>
+      <button class="nav-item" onclick="switchScreen('manas')"     id="bnav-manas">
+        <div class="nav-icon">
+          <svg id="icon-manas" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#4B5A72" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <div class="nav-dot" id="dot-manas"></div>
+        </div>
+        <span class="nav-label" id="lbl-manas" style="color:#4B5A72">Manas</span>
+      </button>
+      <button class="nav-item" onclick="switchScreen('therapy')"   id="bnav-therapy">
+        <div class="nav-icon">
+          <svg id="icon-therapy" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#4B5A72" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <div class="nav-dot" id="dot-therapy"></div>
+        </div>
+        <span class="nav-label" id="lbl-therapy" style="color:#4B5A72">Therapy</span>
+      </button>
+      <button class="nav-item" onclick="switchScreen('community')" id="bnav-community">
+        <div class="nav-icon">
+          <svg id="icon-community" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#4B5A72" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <div class="nav-dot" id="dot-community"></div>
+        </div>
+        <span class="nav-label" id="lbl-community" style="color:#4B5A72">Community</span>
+      </button>
+      <button class="nav-item" onclick="switchScreen('profile')"   id="bnav-profile">
+        <div class="nav-icon">
+          <svg id="icon-profile" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#4B5A72" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <div class="nav-dot" id="dot-profile"></div>
+        </div>
+        <span class="nav-label" id="lbl-profile" style="color:#4B5A72">Profile</span>
+      </button>
+    </div>
+
+    <div class="home-indicator"><div class="home-bar"></div></div>
+  </div>
+</div>
+
+<!-- Components -->
+<script type="text/babel" src="HomeScreen.jsx"></script>
+<script type="text/babel" src="ManasChat.jsx"></script>
+<script type="text/babel" src="BreathingSession.jsx"></script>
+<script type="text/babel" src="MoodLog.jsx"></script>
+<script type="text/babel" src="SetupathJourney.jsx"></script>
+<script type="text/babel" src="SanghaTherapy.jsx"></script>
+<script type="text/babel" src="CommunityScreen.jsx"></script>
+<script type="text/babel" src="ProfileScreen.jsx"></script>
+
+<script type="text/babel">
+  const { useState } = React;
+  const NAV = ['home','manas','therapy','community','profile','breathe'];
+
+  const SCREENS = {
+    home:      () => <HomeScreen       onNavigate={switchScreenReact} />,
+    manas:     () => <ManasChat        onNavigate={switchScreenReact} />,
+    therapy:   () => <SanghaTherapy    onNavigate={switchScreenReact} />,
+    community: () => <CommunityScreen  onNavigate={switchScreenReact} />,
+    profile:   () => <ProfileScreen    onNavigate={switchScreenReact} />,
+    breathe:   () => <BreathingSession onNavigate={switchScreenReact} />,
+    mood:      () => <MoodLog          onNavigate={switchScreenReact} />,
+    journey:   () => <SetupathJourney  onNavigate={switchScreenReact} />,
+  };
+
+  let _setScreen = null;
+
+  function App() {
+    const [screen, setScreen] = useState('home');
+    _setScreen = setScreen;
+    const Screen = SCREENS[screen] || SCREENS.home;
+    return <Screen />;
+  }
+
+  function switchScreenReact(s) {
+    if (_setScreen) _setScreen(s);
+    updateNavUI(s);
+  }
+
+  function updateNavUI(active) {
+    const PRIMARY = ['home','manas','therapy','community','profile'];
+    const colorMap = { home:'#7C3AED', manas:'#7C3AED', therapy:'#7C3AED', community:'#7C3AED', profile:'#7C3AED' };
+    NAV.forEach(k => {
+      const lbl  = document.getElementById('lbl-'+k);
+      const dot  = document.getElementById('dot-'+k);
+      const icon = document.getElementById('icon-'+k);
+      const sc   = document.getElementById('nav-'+k);
+      const isActive = k === active || (active === 'mood' && k === 'home') || (active === 'journey' && k === 'home') || (active === 'breathe' && k === 'home');
+      const navActive = PRIMARY.includes(active) ? active : 'home';
+      const navMatch = k === navActive;
+      if (lbl)  lbl.style.color  = navMatch ? '#C4B5FD' : '#4B5A72';
+      if (icon) icon.setAttribute('stroke', navMatch ? '#7C3AED' : '#4B5A72');
+      if (dot)  dot.style.display = navMatch ? 'block' : 'none';
+      if (sc)   sc.className = 'side-card' + (k === active ? ' active' : '');
+    });
+  }
+
+  updateNavUI('home');
+  const root = ReactDOM.createRoot(document.getElementById('reactRoot'));
+  root.render(<App />);
+</script>
+
+<script>
+  function switchScreen(s) {
+    if (window._setScreen) window._setScreen(s);
+    const NAV = ['home','manas','therapy','community','profile','breathe'];
+    const PRIMARY = ['home','manas','therapy','community','profile'];
+    const navActive = PRIMARY.includes(s) ? s : 'home';
+    NAV.forEach(k => {
+      const lbl  = document.getElementById('lbl-'+k);
+      const dot  = document.getElementById('dot-'+k);
+      const icon = document.getElementById('icon-'+k);
+      const sc   = document.getElementById('nav-'+k);
+      const navMatch = k === navActive;
+      if (lbl)  lbl.style.color = navMatch ? '#C4B5FD' : '#4B5A72';
+      if (icon) icon.setAttribute('stroke', navMatch ? '#7C3AED' : '#4B5A72');
+      if (dot)  dot.style.display = navMatch ? 'block' : 'none';
+      if (sc)   sc.className = 'side-card' + (k === s ? ' active' : '');
+    });
+  }
+</script>
+</body>
+</html>

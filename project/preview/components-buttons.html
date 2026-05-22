@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0C1120; padding: 20px; font-family: 'DM Sans', sans-serif; }
+  .label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5A72; margin-bottom: 12px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; align-items: center; }
+  .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 6px 0 14px; }
+
+  /* Primary */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 20px; border-radius: 12px; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: transform 80ms, opacity 150ms; letter-spacing: 0.02em; min-height: 48px; }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary  { background: #7C3AED; color: #F0F4FF; }
+  .btn-primary:hover { background: #6D28D9; }
+  .btn-blue     { background: #3B82F6; color: #F0F4FF; }
+  .btn-blue:hover { background: #2563EB; }
+  .btn-ghost    { background: rgba(124,58,237,0.12); color: #C4B5FD; border: 1px solid rgba(124,58,237,0.3); }
+  .btn-ghost:hover { background: rgba(124,58,237,0.2); }
+  .btn-outline  { background: transparent; color: #F0F4FF; border: 1px solid rgba(255,255,255,0.15); }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.3); }
+  .btn-danger   { background: rgba(248,113,113,0.12); color: #F87171; border: 1px solid rgba(248,113,113,0.25); }
+  .btn-sm  { min-height: 36px; padding: 0 14px; font-size: 12px; border-radius: 10px; }
+  .btn-lg  { min-height: 56px; padding: 0 28px; font-size: 17px; width: 100%; }
+  .btn-pill { border-radius: 999px; }
+  .btn-grad { background: linear-gradient(135deg, #3B82F6, #7C3AED); color: #fff; }
+  .btn-icon { width: 44px; padding: 0; }
+  .icon-placeholder { width: 16px; height: 16px; border-radius: 50%; background: currentColor; opacity: 0.6; flex-shrink: 0; }
+  .btn-disabled { opacity: 0.35; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div class="label">Primary</div>
+<div class="row">
+  <button class="btn btn-primary">Start Session</button>
+  <button class="btn btn-blue">Book Therapist</button>
+  <button class="btn btn-grad">Begin Journey</button>
+</div>
+
+<div class="label">Secondary</div>
+<div class="row">
+  <button class="btn btn-ghost">Explore Library</button>
+  <button class="btn btn-outline">Learn More</button>
+  <button class="btn btn-danger">End Session</button>
+</div>
+
+<div class="divider"></div>
+<div class="label">Sizes</div>
+<div class="row">
+  <button class="btn btn-primary btn-sm">Small</button>
+  <button class="btn btn-primary">Default · 48px</button>
+  <button class="btn btn-primary btn-pill">Pill</button>
+</div>
+<div class="row">
+  <button class="btn btn-grad btn-lg">Begin Your Breathing Session</button>
+</div>
+
+<div class="divider"></div>
+<div class="label">With Icon</div>
+<div class="row">
+  <button class="btn btn-primary"><div class="icon-placeholder"></div> Breathe</button>
+  <button class="btn btn-ghost"><div class="icon-placeholder"></div> Mood Log</button>
+  <button class="btn btn-outline btn-icon"><div class="icon-placeholder"></div></button>
+  <button class="btn btn-primary btn-disabled">Disabled</button>
+</div>
+
+</body>
+</html>

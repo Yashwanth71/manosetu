@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Syne:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0C1120; font-family: 'DM Sans', sans-serif; padding: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .swatch { border-radius: 10px; overflow: hidden; }
+  .color-block { height: 56px; width: 100%; }
+  .info { padding: 8px 10px; background: #111827; border: 1px solid rgba(255,255,255,0.06); border-top: none; border-radius: 0 0 10px 10px; }
+  .name { font-size: 11px; font-weight: 500; color: #F0F4FF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hex  { font-size: 10px; color: #4B5A72; margin-top: 2px; font-family: 'DM Mono', monospace; }
+  .section-label { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5A72; margin: 16px 0 8px; }
+  .section-label:first-child { margin-top: 0; }
+</style>
+</head>
+<body>
+<div class="section-label">Surfaces</div>
+<div class="grid">
+  <div class="swatch"><div class="color-block" style="background:#0C1120;border:1px solid rgba(255,255,255,0.1)"></div><div class="info"><div class="name">App BG</div><div class="hex">#0C1120</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#111827"></div><div class="info"><div class="name">Card</div><div class="hex">#111827</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#1C2333"></div><div class="info"><div class="name">Elevated</div><div class="hex">#1C2333</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:rgba(12,17,32,0.88)"></div><div class="info"><div class="name">Overlay</div><div class="hex">rgba 88%</div></div></div>
+</div>
+
+<div class="section-label">Brand Accents</div>
+<div class="grid">
+  <div class="swatch"><div class="color-block" style="background:#7C3AED"></div><div class="info"><div class="name">Violet — Manas</div><div class="hex">#7C3AED</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#6D28D9"></div><div class="info"><div class="name">Violet Dim</div><div class="hex">#6D28D9</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#3B82F6"></div><div class="info"><div class="name">Blue — Therapy</div><div class="hex">#3B82F6</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#2563EB"></div><div class="info"><div class="name">Blue Dim</div><div class="hex">#2563EB</div></div></div>
+</div>
+
+<div class="section-label">Text</div>
+<div class="grid">
+  <div class="swatch"><div class="color-block" style="background:#F0F4FF"></div><div class="info"><div class="name">Primary</div><div class="hex">#F0F4FF · 14.8:1</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#C4B5FD"></div><div class="info"><div class="name">Manas</div><div class="hex">#C4B5FD · 8.6:1</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#8B9CB8"></div><div class="info"><div class="name">Secondary</div><div class="hex">#8B9CB8</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#4B5A72"></div><div class="info"><div class="name">Muted</div><div class="hex">#4B5A72</div></div></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Syne:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #F0EFED; font-family: 'DM Sans', sans-serif; padding: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .swatch { border-radius: 10px; overflow: hidden; }
+  .color-block { height: 56px; width: 100%; border: 1px solid rgba(0,0,0,0.06); }
+  .info { padding: 8px 10px; background: #fff; border: 1px solid rgba(0,0,0,0.06); border-top: none; border-radius: 0 0 10px 10px; }
+  .name { font-size: 11px; font-weight: 500; color: #0D1117; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hex  { font-size: 10px; color: #7A8494; margin-top: 2px; font-family: 'DM Mono', monospace; }
+  .section-label { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7A8494; margin: 16px 0 8px; }
+  .section-label:first-child { margin-top: 0; }
+</style>
+</head>
+<body>
+<div class="section-label">Surfaces</div>
+<div class="grid">
+  <div class="swatch"><div class="color-block" style="background:#FAFAF8"></div><div class="info"><div class="name">App BG</div><div class="hex">#FAFAF8</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#FFFFFF"></div><div class="info"><div class="name">Card</div><div class="hex">#FFFFFF</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#F0EFED"></div><div class="info"><div class="name">Surface</div><div class="hex">#F0EFED</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#E8E7E4"></div><div class="info"><div class="name">Elevated</div><div class="hex">#E8E7E4</div></div></div>
+</div>
+
+<div class="section-label">Text</div>
+<div class="grid">
+  <div class="swatch"><div class="color-block" style="background:#0D1117"></div><div class="info"><div class="name">Primary</div><div class="hex">#0D1117 · 18.5:1</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#3D4451"></div><div class="info"><div class="name">Secondary</div><div class="hex">#3D4451 · 10.2:1</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#7A8494"></div><div class="info"><div class="name">Muted</div><div class="hex">#7A8494</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#7C3AED"></div><div class="info"><div class="name">Accent</div><div class="hex">#7C3AED</div></div></div>
+</div>
+</body>
+</html>

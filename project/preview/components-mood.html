@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0C1120; font-family: 'DM Sans', sans-serif;
+    color: #F0F4FF; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  .step { display: none; flex-direction: column; width: 100%; max-width: 390px; min-height: 580px; padding: 0 0 24px; }
+  .step.active { display: flex; }
+
+  /* Progress track — linear, not dots, reduces completion anxiety */
+  .progress-track { height: 2px; background: rgba(255,255,255,0.06); margin: 0; }
+  .progress-fill  { height: 100%; background: linear-gradient(90deg,#3B82F6,#7C3AED); transition: width 0.4s ease; }
+
+  /* Step label */
+  .step-meta { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px 0; }
+  .step-counter { font-family: 'DM Mono', monospace; font-size: 10px; color: #4B5A72; }
+  .step-skip { font-size: 11px; color: #4B5A72; background: none; border: none; cursor: pointer; padding: 0; font-family: 'DM Sans', sans-serif; }
+
+  .step-header { text-align: center; padding: 8px 24px 0; }
+  .step-q    { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: #F0F4FF; line-height: 1.3; }
+  .step-hint { font-size: 12px; color: #4B5A72; margin-top: 5px; line-height: 1.5; }
+
+  /* ══ ORB — no emoji, purely abstract ══ */
+  .orb-stage {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 8px 24px 4px; gap: 0;
+  }
+  .orb-wrap { position: relative; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; }
+  .orb-glow {
+    position: absolute; inset: -24px; border-radius: 50%;
+    filter: blur(44px); opacity: 0.3;
+    transition: background 0.7s ease;
+    animation: breathePulse 3.5s ease-in-out infinite;
+  }
+  .orb-body {
+    width: 148px; height: 148px;
+    transition: border-radius 0.8s cubic-bezier(0.34,1.56,0.64,1), background 0.7s ease, box-shadow 0.7s ease;
+    position: relative; z-index: 1;
+    animation: breatheSize 3.5s ease-in-out infinite;
+    /* Inner texture rings */
+    display: flex; align-items: center; justify-content: center;
+  }
+  .orb-ring {
+    width: 72px; height: 72px; border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    transition: border-color 0.7s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .orb-core { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.18); }
+
+  /* Text beneath orb — valence label + energy hint */
+  .orb-label  { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: #F0F4FF; margin-top: 16px; letter-spacing: 0.01em; }
+  .orb-energy { font-size: 10px; color: #4B5A72; margin-top: 4px; letter-spacing: 0.05em; }
+
+  @keyframes breatheSize  { 0%,100%{transform:scale(1)}   50%{transform:scale(1.05)} }
+  @keyframes breathePulse { 0%,100%{opacity:.25;transform:scale(1)} 50%{opacity:.4;transform:scale(1.08)} }
+
+  /* Spectrum slider */
+  .slider-section { padding: 0 24px; }
+  .spectrum-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
+  .spec-end { font-size: 10px; color: #4B5A72; font-weight: 500; }
+  .spec-mid  { font-size: 10px; color: #4B5A72; }
+  .mood-track {
+    width: 100%; height: 5px; border-radius: 3px;
+    background: linear-gradient(90deg, #6B21A8 0%, #4F46E5 25%, #0284C7 50%, #059669 75%, #D97706 100%);
+    margin-bottom: 12px; position: relative;
+  }
+  input[type=range].mood-slider {
+    -webkit-appearance: none; appearance: none;
+    position: absolute; top: -10px; left: 0; width: 100%;
+    background: transparent; height: 26px; cursor: pointer; margin: 0;
+  }
+  input[type=range].mood-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #F0F4FF;
+    border: 2.5px solid #7C3AED;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.45);
+    transition: border-color 0.5s, transform 0.1s;
+  }
+  input[type=range].mood-slider:active::-webkit-slider-thumb { transform: scale(1.15); }
+
+  /* Energy level — secondary axis */
+  .energy-row { display: flex; gap: 6px; padding: 0 24px 0; margin-top: 4px; }
+  .energy-btn {
+    flex: 1; height: 32px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.02);
+    font-size: 11px; color: #4B5A72; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    transition: all 0.15s;
+  }
+  .energy-btn.active { background: rgba(124,58,237,0.12); border-color: rgba(124,58,237,0.35); color: #C4B5FD; }
+
+  /* ══ STEP 2: Words ══ */
+  .word-section { padding: 12px 24px 0; flex: 1; overflow-y: auto; }
+  .word-group { margin-bottom: 14px; }
+  .word-group-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5A72; margin-bottom: 7px; }
+  .word-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    padding: 7px 13px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    font-size: 12px; font-weight: 500; color: #8B9CB8;
+    cursor: pointer; transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .chip:hover  { border-color: rgba(124,58,237,0.3); color: #C4B5FD; }
+  .chip.active { background: rgba(124,58,237,0.15); border-color: #7C3AED; color: #C4B5FD; }
+  .chip.none-chip { color: #4B5A72; border-style: dashed; }
+  .chip.none-chip.active { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.15); color: '#8B9CB8'; }
+
+  .select-count { font-size: 11px; color: #4B5A72; padding: 0 24px 10px; text-align: right; }
+  .select-count em { color: #C4B5FD; font-style: normal; }
+
+  /* ══ STEP 3: Factors ══ */
+  .factor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 24px 0; }
+  .factor-card {
+    background: #111827; border-radius: 13px; padding: 11px 12px;
+    border: 1px solid rgba(255,255,255,0.06); cursor: pointer;
+    transition: all 0.15s; display: flex; flex-direction: column; gap: 4px;
+  }
+  .factor-card:hover  { border-color: rgba(124,58,237,0.25); }
+  .factor-card.active { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.35); }
+  .factor-top   { display: flex; align-items: center; gap: 7px; }
+  .factor-icon  { font-size: 16px; line-height: 1; }
+  .factor-label { font-size: 12px; font-weight: 500; color: #F0F4FF; }
+  .factor-card.active .factor-label { color: #C4B5FD; }
+  .factor-hint  { font-size: 10px; color: #4B5A72; line-height: 1.3; }
+
+  /* ══ Done ══ */
+  .done-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; min-height: 540px;
+    padding: 24px; gap: 12px; animation: fadeUp 0.5s ease-out both;
+  }
+  .done-orb {
+    width: 88px; height: 88px; border-radius: 50%;
+    animation: breatheSize 2.5s ease-in-out infinite;
+  }
+  .done-insight {
+    background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2);
+    border-radius: 14px; padding: 12px 16px;
+    font-size: 12px; color: '#C4B5FD'; line-height: 1.65;
+    width: 100%; text-align: center;
+  }
+  .done-insight strong { color: #C4B5FD; font-weight: 500; }
+  .done-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .done-tag { padding: 4px 11px; border-radius: 999px; font-size: 11px; font-weight: 500; }
+
+  /* CTAs */
+  .cta-row { padding: 14px 24px 0; }
+  .btn-primary {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg,#3B82F6,#7C3AED);
+    border: none; border-radius: 14px; color: white;
+    font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: opacity 0.15s, transform 0.1s;
+  }
+  .btn-primary:hover  { opacity: 0.9; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-ghost {
+    width: 100%; padding: 11px; margin-top: 8px;
+    background: transparent; border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; color: #4B5A72;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer;
+  }
+  .btn-manas {
+    width: 100%; padding: 12px; margin-top: 8px;
+    background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.28);
+    border-radius: 14px; color: #C4B5FD;
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer;
+  }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<!-- ══ STEP 1: Valence + Energy ══ -->
+<div class="step active" id="step1">
+  <div class="progress-track"><div class="progress-fill" style="width:33%"></div></div>
+  <div class="step-meta">
+    <span class="step-counter">Step 1 of 3</span>
+    <button class="step-skip" onclick="goStep(2)">Skip</button>
+  </div>
+  <div class="step-header">
+    <div class="step-q">How are you right now?</div>
+    <div class="step-hint">Drag the slider — there's no right answer.</div>
+  </div>
+
+  <div class="orb-stage">
+    <div class="orb-wrap">
+      <div class="orb-glow"  id="orbGlow"></div>
+      <div class="orb-body"  id="orbBody">
+        <div class="orb-ring" id="orbRing">
+          <div class="orb-core"></div>
+        </div>
+      </div>
+    </div>
+    <div class="orb-label"  id="orbLabel">Okay</div>
+    <div class="orb-energy" id="orbEnergy">MODERATE ENERGY</div>
+  </div>
+
+  <div class="slider-section">
+    <div class="spectrum-row">
+      <span class="spec-end">Very Difficult</span>
+      <span class="spec-mid">Okay</span>
+      <span class="spec-end">Very Good</span>
+    </div>
+    <div class="mood-track" style="position:relative">
+      <input type="range" class="mood-slider" id="moodSlider" min="0" max="100" value="50">
+    </div>
+  </div>
+
+  <!-- Energy level (arousal axis) -->
+  <div style="padding:4px 24px 0">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#4B5A72;margin-bottom:7px">Energy level right now</div>
+    <div class="energy-row" style="padding:0">
+      <button class="energy-btn" id="e-low"    onclick="setEnergy('Low energy')">Low</button>
+      <button class="energy-btn active" id="e-mid" onclick="setEnergy('Moderate energy')">Moderate</button>
+      <button class="energy-btn" id="e-high"   onclick="setEnergy('High energy')">High</button>
+    </div>
+  </div>
+
+  <div class="cta-row" style="margin-top:auto">
+    <button class="btn-primary" onclick="goStep(2)">Continue →</button>
+  </div>
+</div>
+
+<!-- ══ STEP 2: Describe ══ -->
+<div class="step" id="step2">
+  <div class="progress-track"><div class="progress-fill" style="width:66%"></div></div>
+  <div class="step-meta">
+    <span class="step-counter">Step 2 of 3</span>
+    <button class="step-skip" onclick="goStep(3)">Skip</button>
+  </div>
+  <div class="step-header">
+    <div class="step-q" id="step2q">What describes this?</div>
+    <div class="step-hint">Select all that feel true. Manas uses this to personalise its response.</div>
+  </div>
+  <div class="select-count">Selected: <em id="wordCount">0</em></div>
+  <div class="word-section" id="wordSection"></div>
+  <div class="cta-row">
+    <button class="btn-primary" onclick="goStep(3)">Continue →</button>
+    <button class="btn-ghost"   onclick="goStep(1)">← Back</button>
+  </div>
+</div>
+
+<!-- ══ STEP 3: Factors ══ -->
+<div class="step" id="step3">
+  <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+  <div class="step-meta">
+    <span class="step-counter">Step 3 of 3</span>
+    <button class="step-skip" onclick="complete()">Skip</button>
+  </div>
+  <div class="step-header">
+    <div class="step-q">What's driving this feeling?</div>
+    <div class="step-hint">Patterns over time help Manas and your therapist understand context.</div>
+  </div>
+  <div class="factor-grid" id="factorGrid"></div>
+  <div class="cta-row" style="margin-top:auto">
+    <button class="btn-primary" onclick="complete()">Save Check-In</button>
+    <button class="btn-ghost"   onclick="goStep(2)">← Back</button>
+  </div>
+</div>
+
+<!-- ══ DONE ══ -->
+<div id="doneScreen" style="display:none;width:100%;max-width:390px">
+  <div class="done-wrap">
+    <div class="done-orb" id="doneOrb"></div>
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:#F0F4FF">Logged</div>
+    <div class="done-insight" id="doneInsight"></div>
+    <div class="done-tags" id="doneTags"></div>
+    <div style="width:100%">
+      <button class="btn-primary" onclick="resetAll()">Log Another</button>
+      <button class="btn-manas">Talk to Manas about this →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Mood spectrum ──
+const MOODS = [
+  { v:0,  label:'Very Difficult', energy:'LOW ENERGY',      color:'#6B21A8', glow:'#4C1D95', br:'38% 62% 58% 42% / 52% 38% 62% 48%', insight:'You seem to be going through something heavy right now. Manas will check in with a grounding exercise.' },
+  { v:14, label:'Difficult',      energy:'VARIED',           color:'#7C3AED', glow:'#5B21B6', br:'48% 52% 44% 56% / 46% 54% 50% 50%', insight:'Feeling this way is valid. Manas noticed patterns in your recent logs and will follow up thoughtfully.' },
+  { v:28, label:'Uneasy',         energy:'LOW TO MODERATE',  color:'#4F46E5', glow:'#3730A3', br:'50% 50% 46% 54% / 50% 46% 54% 50%', insight:'Unease often signals your system needs attention. Manas will suggest a short grounding technique.' },
+  { v:44, label:'Okay',           energy:'MODERATE ENERGY',  color:'#0284C7', glow:'#0369A1', br:'50% 50% 50% 50%',                   insight:'A steady state. Manas will continue building on your recent progress.' },
+  { v:56, label:'Settled',        energy:'MODERATE',         color:'#0891B2', glow:'#0E7490', br:'54% 46% 50% 50% / 50% 54% 46% 50%', insight:'You seem balanced. Manas will keep the momentum going.' },
+  { v:68, label:'Good',           energy:'MODERATE TO HIGH', color:'#059669', glow:'#047857', br:'56% 44% 54% 46% / 46% 56% 44% 54%', insight:'Positive state — a good time for a breathing session or journaling.' },
+  { v:80, label:'Well',           energy:'HIGH ENERGY',      color:'#10B981', glow:'#059669', br:'58% 42% 56% 44% / 44% 58% 42% 56%', insight:'Your system is in a good place. Manas will recommend a progressive breathing practice.' },
+  { v:90, label:'Very Good',      energy:'HIGH ENERGY',      color:'#F59E0B', glow:'#D97706', br:'60% 40% 58% 42% / 42% 60% 40% 58%', insight:'A strong day. Manas will note this positive state in your weekly insights.' },
+];
+
+// Words organised by psychological quadrant (Russell's Circumplex Model)
+const WORD_GROUPS = [
+  {
+    label: 'High arousal · Difficult',
+    words: ['Anxious','Overwhelmed','Irritable','Restless','Panicked','Stressed'],
+    range: [0, 45],
+  },
+  {
+    label: 'Low arousal · Difficult',
+    words: ['Drained','Hopeless','Withdrawn','Numb','Fatigued','Lonely'],
+    range: [0, 50],
+  },
+  {
+    label: 'Neutral / Mixed',
+    words: ['Uncertain','Distracted','Flat','Indifferent','Confused'],
+    range: [30, 70],
+  },
+  {
+    label: 'Low arousal · Positive',
+    words: ['Calm','Content','Peaceful','Grateful','At ease'],
+    range: [45, 100],
+  },
+  {
+    label: 'High arousal · Positive',
+    words: ['Energised','Hopeful','Motivated','Joyful','Focused'],
+    range: [55, 100],
+  },
+];
+
+const FACTORS = [
+  { icon:'📚', label:'Studies / Work',   hint:'Deadlines, performance pressure' },
+  { icon:'👨‍👩‍👧', label:'Family',           hint:'Relationships at home' },
+  { icon:'💤', label:'Sleep',             hint:'Quality or quantity of rest' },
+  { icon:'🤝', label:'Relationships',     hint:'Friends, partner, colleagues' },
+  { icon:'💰', label:'Financial stress',  hint:'Money, job stability' },
+  { icon:'🏙️', label:'Commute / City',    hint:'Travel, environment, noise' },
+  { icon:'🌤️', label:'Weather / Health',  hint:'Physical wellbeing' },
+  { icon:'📱', label:'Social media',      hint:'Online comparison, news overload' },
+];
+
+let moodVal = 50;
+let energyLabel = 'Moderate energy';
+let selectedWords = new Set();
+let selectedFactors = new Set();
+
+// ── DOM refs ──
+const slider   = document.getElementById('moodSlider');
+const orbGlow  = document.getElementById('orbGlow');
+const orbBody  = document.getElementById('orbBody');
+const orbRing  = document.getElementById('orbRing');
+const orbLabel = document.getElementById('orbLabel');
+const orbEnergy= document.getElementById('orbEnergy');
+
+function getMood(val) {
+  let m = MOODS[0];
+  for (const x of MOODS) { if (val >= x.v) m = x; }
+  return m;
+}
+
+function setEnergy(label) {
+  energyLabel = label;
+  ['low','mid','high'].forEach(k => document.getElementById('e-'+k).classList.remove('active'));
+  const map = { 'Low energy':'low', 'Moderate energy':'mid', 'High energy':'high' };
+  const key = map[label];
+  if (key) document.getElementById('e-'+key).classList.add('active');
+  orbEnergy.textContent = label.toUpperCase();
+}
+
+function updateOrb(val) {
+  moodVal = val;
+  const m = getMood(val);
+  orbGlow.style.background = m.glow;
+  orbBody.style.background = `radial-gradient(ellipse at 38% 34%, ${m.color}dd, ${m.glow}ff)`;
+  orbBody.style.borderRadius = m.br;
+  orbBody.style.boxShadow = `0 0 48px ${m.color}44, inset 0 0 30px rgba(255,255,255,0.04)`;
+  orbRing.style.borderColor = `rgba(255,255,255,${val > 55 ? 0.18 : 0.08})`;
+  orbLabel.textContent = m.label;
+  // Thumb color update
+  const s = document.getElementById('thumbStyle') || (() => {
+    const el = document.createElement('style');
+    el.id = 'thumbStyle'; document.head.appendChild(el); return el;
+  })();
+  s.textContent = `input[type=range].mood-slider::-webkit-slider-thumb{border-color:${m.color}!important;}`;
+}
+
+slider.addEventListener('input', e => updateOrb(+e.target.value));
+updateOrb(50);
+
+// ── Word grid ──
+function buildWords() {
+  const val = moodVal;
+  const q   = document.getElementById('step2q');
+  const m   = getMood(val);
+  q.textContent = `You're feeling ${m.label.toLowerCase()} — what describes it?`;
+
+  const section = document.getElementById('wordSection');
+  section.innerHTML = '';
+  selectedWords.clear();
+  document.getElementById('wordCount').textContent = '0';
+
+  const relevant = WORD_GROUPS.filter(g => val >= g.range[0] && val <= g.range[1]);
+
+  relevant.forEach(group => {
+    const div = document.createElement('div');
+    div.className = 'word-group';
+    div.innerHTML = `<div class="word-group-label">${group.label}</div><div class="word-chips"></div>`;
+    const chips = div.querySelector('.word-chips');
+
+    group.words.forEach(w => {
+      const chip = document.createElement('button');
+      chip.className = 'chip';
+      chip.textContent = w;
+      chip.onclick = () => {
+        chip.classList.toggle('active');
+        selectedWords[chip.classList.contains('active') ? 'add' : 'delete'](w);
+        document.getElementById('wordCount').textContent = selectedWords.size;
+      };
+      chips.appendChild(chip);
+    });
+
+    // None of these option per group
+    const none = document.createElement('button');
+    none.className = 'chip none-chip';
+    none.textContent = 'None of these';
+    none.onclick = () => {
+      [...chips.querySelectorAll('.chip:not(.none-chip)')].forEach(c => c.classList.remove('active'));
+      group.words.forEach(w => selectedWords.delete(w));
+      document.getElementById('wordCount').textContent = selectedWords.size;
+    };
+    chips.appendChild(none);
+    section.appendChild(div);
+  });
+}
+
+// ── Factor grid ──
+function buildFactors() {
+  const grid = document.getElementById('factorGrid');
+  grid.innerHTML = '';
+  selectedFactors.clear();
+
+  FACTORS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'factor-card';
+    card.innerHTML = `
+      <div class="factor-top">
+        <span class="factor-icon">${f.icon}</span>
+        <span class="factor-label">${f.label}</span>
+      </div>
+      <div class="factor-hint">${f.hint}</div>`;
+    card.onclick = () => {
+      card.classList.toggle('active');
+      selectedFactors[card.classList.contains('active') ? 'add' : 'delete'](f.label);
+    };
+    grid.appendChild(card);
+  });
+}
+
+// ── Nav ──
+function goStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  if (n === 2) buildWords();
+  if (n === 3) buildFactors();
+}
+
+// ── Complete ──
+function complete() {
+  const m = getMood(moodVal);
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+
+  const doneOrb = document.getElementById('doneOrb');
+  doneOrb.style.cssText = `width:88px;height:88px;border-radius:${m.br};background:radial-gradient(ellipse at 38% 34%,${m.color}cc,${m.glow}ee);box-shadow:0 0 40px ${m.color}44;`;
+
+  document.getElementById('doneInsight').innerHTML = `<strong>Manas noted:</strong> ${m.insight}`;
+
+  const tagWrap = document.getElementById('doneTags');
+  tagWrap.innerHTML = '';
+  [...selectedWords].slice(0,5).forEach(w => {
+    const t = document.createElement('span');
+    t.className = 'done-tag';
+    t.style.cssText = 'background:rgba(124,58,237,0.14);color:#C4B5FD;border:1px solid rgba(124,58,237,0.25)';
+    t.textContent = w; tagWrap.appendChild(t);
+  });
+  [...selectedFactors].slice(0,3).forEach(f => {
+    const t = document.createElement('span');
+    t.className = 'done-tag';
+    t.style.cssText = 'background:rgba(59,130,246,0.1);color:#93C5FD;border:1px solid rgba(59,130,246,0.2)';
+    t.textContent = f; tagWrap.appendChild(t);
+  });
+
+  document.getElementById('doneScreen').style.display = 'block';
+}
+
+function resetAll() {
+  document.getElementById('doneScreen').style.display = 'none';
+  selectedWords.clear(); selectedFactors.clear();
+  slider.value = 50; updateOrb(50);
+  setEnergy('Moderate energy');
+  goStep(1);
+}
+</script>
+</body>
+</html>

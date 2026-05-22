@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Syne:wght@700;800&family=Noto+Sans+Devanagari:wght@500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0C1120; padding: 20px; font-family: 'DM Sans', sans-serif; color: #F0F4FF; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #4B5A72; margin: 0 0 10px;
+  }
+  .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 14px 0; }
+
+  /* ── Card grid ── */
+  .card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  /* Base card structure */
+  .card {
+    background: #111827; border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+    transition: border-color 150ms, box-shadow 150ms;
+  }
+  .card:hover {
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .card-body { padding: 14px; }
+
+  /* Manas / AI card */
+  .card-manas {
+    background: #111827; border-radius: 16px;
+    border: 1px solid rgba(124,58,237,0.2);
+    box-shadow: 0 4px 24px rgba(124,58,237,0.12);
+  }
+  .card-manas:hover { border-color: rgba(124,58,237,0.4); }
+
+  /* Therapy/Blue card */
+  .card-therapy {
+    background: #111827; border-radius: 16px;
+    border: 1px solid rgba(59,130,246,0.18);
+  }
+  .card-therapy:hover { border-color: rgba(59,130,246,0.35); }
+
+  /* Hierarchy helpers */
+  .eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    color: #F0F4FF; line-height: 1.25; margin-bottom: 4px;
+  }
+  .card-sub  { font-size: 12px; color: #8B9CB8; line-height: 1.5; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 999px;
+    font-size: 10px; font-weight: 500;
+  }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+  .icon-box {
+    width: 34px; height: 34px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Meter bar */
+  .meter-track { height: 3px; border-radius: 2px; background: rgba(255,255,255,0.08); margin-top: 10px; }
+  .meter-fill  { height: 100%; border-radius: 2px; }
+
+  /* Streak gradient card */
+  .card-streak {
+    border-radius: 16px; padding: 14px;
+    background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(124,58,237,0.15) 100%);
+    border: 1px solid rgba(124,58,237,0.22);
+    display: flex; align-items: center; gap: 14px;
+  }
+
+  /* Therapist card */
+  .card-therapist {
+    background: #111827; border-radius: 16px; padding: 14px;
+    border: 1px solid rgba(255,255,255,0.06); display: flex; gap: 12px; align-items: flex-start;
+  }
+  .therapist-avatar {
+    width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0;
+    background: linear-gradient(135deg, #3B82F6 20%, #7C3AED);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; color: white;
+  }
+  .confidence-bar {
+    display: flex; align-items: center; gap: 6px; margin-top: 7px;
+  }
+  .conf-fill { height: 3px; border-radius: 2px; background: #34D399; flex: 1; }
+  .conf-empty { height: 3px; border-radius: 2px; background: rgba(255,255,255,0.08); flex: 1; }
+
+  /* Inline tool card */
+  .tool-card {
+    background: #0C1120; border-radius: 12px; padding: 11px 12px;
+    border: 1px solid rgba(124,58,237,0.2); margin-top: 2px;
+  }
+
+  /* Float animation */
+  @keyframes floatUp { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+  .float { animation: floatUp 4s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<!-- ROW 1: Core content cards -->
+<div class="section-label">Content Cards — Information Hierarchy</div>
+<div class="card-grid-2" style="margin-bottom:10px">
+
+  <!-- Manas AI prompt card -->
+  <div class="card card-manas">
+    <div style="height:4px; background:linear-gradient(90deg,#3B82F6,#7C3AED)"></div>
+    <div class="card-body">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div class="avatar" style="background:linear-gradient(135deg,#3B82F6,#7C3AED)"></div>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#F0F4FF">Manas</div>
+          <div style="font-size:10px;color:#34D399;display:flex;align-items:center;gap:3px">
+            <span style="width:5px;height:5px;border-radius:50%;background:#34D399;display:inline-block"></span>
+            Active now
+          </div>
+        </div>
+        <div style="margin-left:auto">
+          <span class="badge" style="background:rgba(124,58,237,0.15);color:#C4B5FD">AI</span>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:300;color:#C4B5FD;line-height:1.65">I'm here. What's been on your mind today?</div>
+    </div>
+  </div>
+
+  <!-- Breathing session card -->
+  <div class="card card-therapy float">
+    <div class="card-body">
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+        <div class="icon-box" style="background:rgba(59,130,246,0.12)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.94"/><path d="M14 13C8 14 6 20.42 4 22"/><path d="M20 8c-.4 4-1.5 6.5-4 9"/></svg>
+        </div>
+        <div style="flex:1">
+          <div class="eyebrow" style="color:#3B82F6">Pranayama</div>
+          <div class="card-title">Nadi Shodhana</div>
+          <div class="card-sub" style="font-family:'Noto Sans Devanagari',sans-serif;font-size:12px;color:#8B9CB8">नाड़ी शोधन · 7 min</div>
+        </div>
+      </div>
+      <div class="meter-track"><div class="meter-fill" style="width:62%;background:linear-gradient(90deg,#3B82F6,#7C3AED)"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:5px">
+        <span style="font-size:10px;color:#4B5A72">62% complete</span>
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:#3B82F6">4:20 left</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 2: Streak + Therapist -->
+<div class="card-grid-2" style="margin-bottom:10px">
+  <!-- Streak card -->
+  <div class="card-streak">
+    <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:38px;line-height:1;background:linear-gradient(135deg,#3B82F6,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0">7</div>
+    <div style="flex:1">
+      <div class="card-title" style="font-size:13px">Day Streak</div>
+      <div class="card-sub" style="font-size:11px">7 days showing up for yourself.</div>
+      <div style="margin-top:7px;display:flex;gap:4px">
+        {['M','T','W','T','F','S','S'].map((d,i) => (
+          <div style="width:18px;height:18px;border-radius:5px;background:rgba(124,58,237,0.2);display:flex;align-items:center;justify-content:center">
+            <span style="font-size:8px;color:#C4B5FD">{d}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:#34D399;font-weight:500">+50 XP</div>
+      <div style="font-size:9px;color:#4B5A72;margin-top:2px">today</div>
+    </div>
+  </div>
+
+  <!-- Therapist match card -->
+  <div class="card-therapist">
+    <div class="therapist-avatar">AS</div>
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+        <div class="card-title" style="font-size:13px">Dr. Ananya S.</div>
+        <span class="badge" style="background:rgba(52,211,153,0.1);color:#34D399;font-size:9px">Available</span>
+      </div>
+      <div class="card-sub" style="font-size:11px">CBT · Hindi + English</div>
+      <div class="confidence-bar">
+        <div class="conf-fill"></div><div class="conf-fill"></div><div class="conf-fill"></div>
+        <div class="conf-fill" style="background:rgba(255,255,255,0.08)"></div><div class="conf-empty"></div>
+        <span style="font-size:9px;color:#34D399;white-space:nowrap">86% match</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 3: Inline tool + Status cards -->
+<div class="section-label">Inline Tool Card · State Variants</div>
+<div class="card-grid-3">
+  <!-- Inline tool card -->
+  <div class="card" style="grid-column:span 2">
+    <div class="card-body" style="padding:12px">
+      <div style="font-size:13px;font-weight:300;color:#C4B5FD;line-height:1.6;margin-bottom:10px">That blank-mind feeling is your nervous system responding to stress. Let's try something right now.</div>
+      <div class="tool-card">
+        <div class="eyebrow" style="color:#7C3AED;font-size:9px">Breathing · Inline Tool</div>
+        <div class="card-title" style="font-size:13px;margin-bottom:2px">Box Breathing · 3 min</div>
+        <div class="card-sub" style="font-size:11px;margin-bottom:8px">4-4-4-4 · Calms the nervous system</div>
+        <button style="width:100%;padding:8px;background:#7C3AED;border:none;border-radius:9px;color:white;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer">Begin Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status/empty state card -->
+  <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;gap:8px;min-height:100px">
+    <div style="width:32px;height:32px;border-radius:50%;background:rgba(124,58,237,0.12);border:1px dashed rgba(124,58,237,0.3);display:flex;align-items:center;justify-content:center">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </div>
+    <div style="font-size:11px;color:#4B5A72;line-height:1.5">Log your first mood to unlock insights</div>
+  </div>
+</div>
+
+</body>
+</html>

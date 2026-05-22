@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Syne:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0C1120; font-family: 'DM Sans', sans-serif; padding: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .swatch { border-radius: 10px; overflow: hidden; }
+  .color-block { height: 56px; display: flex; align-items: center; justify-content: center; }
+  .icon { font-size: 20px; }
+  .info { padding: 8px 10px; background: #111827; border: 1px solid rgba(255,255,255,0.06); border-top: none; border-radius: 0 0 10px 10px; }
+  .name { font-size: 11px; font-weight: 500; color: #F0F4FF; }
+  .hex  { font-size: 10px; color: #4B5A72; margin-top: 2px; }
+  .section-label { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #4B5A72; margin: 16px 0 8px; }
+  .section-label:first-child { margin-top: 0; }
+  .grad-block { height: 56px; border-radius: 10px 10px 0 0; }
+</style>
+</head>
+<body>
+<div class="section-label">States</div>
+<div class="grid">
+  <div class="swatch"><div class="color-block" style="background:#1a3a2a"><div class="icon" style="color:#34D399">✓</div></div><div class="info"><div class="name">Success</div><div class="hex">#34D399</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#3a2e0a"><div class="icon" style="color:#FBBF24">!</div></div><div class="info"><div class="name">Warning</div><div class="hex">#FBBF24</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#3a1212"><div class="icon" style="color:#F87171">✕</div></div><div class="info"><div class="name">Error / SOS</div><div class="hex">#F87171</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#0f2040"><div class="icon" style="color:#60A5FA">i</div></div><div class="info"><div class="name">Info</div><div class="hex">#60A5FA</div></div></div>
+</div>
+
+<div class="section-label">Gradients</div>
+<div class="grid" style="grid-template-columns: repeat(2,1fr)">
+  <div class="swatch"><div class="grad-block" style="background:linear-gradient(135deg,#3B82F6,#7C3AED)"></div><div class="info"><div class="name">Brand (diagonal)</div><div class="hex">Blue → Violet</div></div></div>
+  <div class="swatch"><div class="grad-block" style="background:linear-gradient(135deg,#7C3AED,#A855F7)"></div><div class="info"><div class="name">Manas</div><div class="hex">Violet → Light Violet</div></div></div>
+</div>
+
+<div class="section-label">Tints & Glows</div>
+<div class="grid">
+  <div class="swatch"><div class="color-block" style="background:rgba(124,58,237,0.25)"></div><div class="info"><div class="name">Violet Glow</div><div class="hex">rgba 25%</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:rgba(124,58,237,0.12)"></div><div class="info"><div class="name">Violet Tint</div><div class="hex">rgba 12%</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:rgba(59,130,246,0.12)"></div><div class="info"><div class="name">Blue Tint</div><div class="hex">rgba 12%</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:rgba(255,255,255,0.06)"></div><div class="info"><div class="name">Border</div><div class="hex">rgba 6%</div></div></div>
+</div>
+</body>
+</html>
